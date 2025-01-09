@@ -1,5 +1,8 @@
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import math
 
 class BasePage():
@@ -8,7 +11,7 @@ class BasePage():
     def __init__(self, browser, url, timeout=5):
         self.browser = browser
         self.url = url
-        self.browser.implicitly_wait(timeout)
+        #self.browser.implicitly_wait(timeout)
     
     # метод для открывания страницы в браузере
     def open(self):
@@ -21,7 +24,24 @@ class BasePage():
         except NoSuchElementException:
             return False
         return True
-    
+
+    # вспомогательный метод проверки отсутствия элемента (когда что-то может появиться, а не должно)
+    def is_not_element_present(self, selector_type, selector_value, timeout=4):
+        try:
+            WebDriverWait(self.browser, timeout).until(EC.presence_of_element_located((selector_type, selector_value)))
+        except TimeoutException:
+            return True
+        return False
+
+    # вспомогательный метод проверки исчезающих компонентов 
+    def is_disappeared(self, selector_type, selector_value, timeout=4):
+        try:
+            WebDriverWait(self.browser, timeout, 1, TimeoutException).\
+                until_not(EC.presence_of_element_located((selector_type, selector_value)))
+        except TimeoutException:
+            return False
+        return True
+
     # метод для получения кода проверки заданий в stepik
     def solve_quiz_and_get_code(self):
         alert = self.browser.switch_to.alert

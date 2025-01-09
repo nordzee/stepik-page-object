@@ -51,3 +51,13 @@ class ProductPage(BasePage):
         product_price = self.browser.find_element(*ProductPageLocators.PRODUCT_PRICE).text
         product_price_in_notif = self.browser.find_element(*ProductPageLocators.BASKET_VALUE_NOTIF).text
         assert product_price == product_price_in_notif, "Wrong basket value in the notification"
+
+    # нет сообщения о добавлении в козину
+    def should_not_be_product_added_notification(self):
+        assert self.is_not_element_present(*ProductPageLocators.PRODUCT_ADDED_NOTIF),\
+            "'Product added to basket' notification is present, but should not be"
+
+    # сообщение о добавлении в козину пропадает
+    def should_disappear_product_added_notification(self):
+        assert self.is_disappeared(*ProductPageLocators.PRODUCT_ADDED_NOTIF),\
+            "'Product added to basket' notification is present, but should disappear"
