@@ -1,5 +1,6 @@
 import pytest
 from pages.product_page import ProductPage
+from pages.basket_page import BasketPage
 
 base_link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207"
 
@@ -42,3 +43,16 @@ def test_guest_can_go_to_login_page_from_product_page(browser):
     page = ProductPage(browser, base_link)
     page.open()
     page.go_to_login_page()
+
+def test_guest_should_see_basket_link_on_product_page(browser):
+    page = ProductPage(browser, base_link)
+    page.open()
+    page.should_be_basket_link()
+
+def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
+    page = ProductPage(browser, base_link)
+    page.open()
+    page.go_to_basket_page()
+    basket_page = BasketPage(browser, browser.current_url)
+    basket_page.should_not_be_products()
+    basket_page.should_be_empty_basket_info()
