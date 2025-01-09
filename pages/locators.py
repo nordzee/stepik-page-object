@@ -16,3 +16,6 @@ class ProductPageLocators():
     PRODUCT_PRICE = (By.CSS_SELECTOR, ".product_main > .price_color")
     PRODUCT_ADDED_NOTIF = (By.CSS_SELECTOR, ".alert:first-of-type  strong")
     BASKET_VALUE_NOTIF = (By.CSS_SELECTOR, ".alert:last-of-type strong")
+
+class BasePageLocators():
+    LOGIN_LINK = (By.CSS_SELECTOR, "#login_link")
